@@ -16,18 +16,6 @@ def getAllImages(input=None):
    
     return images  
 
-
-
-def imaginesRelacionadas(search_msg: str) -> list:
-        json_collection =  transport.getAllImages(search_msg) 
-        imagesRelacionadas = []
-        for i in range(len(json_collection)):
-            image = translator.fromRequestIntoCard(json_collection[i])
-            if search_msg.lower() in image.name.lower() or search_msg.lower() in image.status.lower():
-                imagesRelacionadas.append(image)
-
-        return imagesRelacionadas
-
 # añadir favoritos (usado desde el template 'home.html')
 def saveFavourite(request):
     fav = '' # transformamos un request del template en una Card.

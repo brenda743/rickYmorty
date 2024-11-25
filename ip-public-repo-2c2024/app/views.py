@@ -19,15 +19,19 @@ def home(request):
 
 
 def search(request):
+    # Obtener el texto ingresado en el buscador
     search_msg = request.POST.get('query', '')
 
-    if search_msg != '':
-        imagesRe=services.imaginesRelacionadas(search_msg)
-        return render(request, 'home.html', { 'images': imagesRe , 'query': search_msg})
+    if search_msg:  # si se ingresó algún texto
+        images = services.getAllImages(search_msg) #busca las imagenes segun el texto
+    else:  # si no se ingreso nada
+        images = services.getAllImages()  # cargar todas las imagenes
 
+    
+    favourite_list = []
 
-    else:
-        return redirect('home')
+    # renderiza la misma plantilla home.html con las imagenes filtradas
+    return render(request, 'home.html', {'images': images, 'favourite_list': favourite_list})
 
 
 
@@ -47,4 +51,5 @@ def deleteFavourite(request):
 
 @login_required
 def exit(request):
-    pass
+    logout(request)  # Cierra la sesión del usuario
+    return redirect('login')
